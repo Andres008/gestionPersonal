@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="Ds_GestionPersonal">
+		<jta-data-source>java:/gestionPersonalDS</jta-data-source>
+		<class>ec.mil.model.dao.entidades.AcaCurso</class>
+		<class>ec.mil.model.dao.entidades.AcaCursoPrerequisito</class>
+		<class>ec.mil.model.dao.entidades.AcaGradoPrerequisito</class>
+		<class>ec.mil.model.dao.entidades.AcaPersonasCurso</class>
+		<class>ec.mil.model.dao.entidades.AcaTipoCurso</class>
+		<class>ec.mil.model.dao.entidades.AutModulo</class>
+		<class>ec.mil.model.dao.entidades.AutPerfilRole</class>
+		<class>ec.mil.model.dao.entidades.AutPerfile</class>
+		<class>ec.mil.model.dao.entidades.AutRole</class>
+		<class>ec.mil.model.dao.entidades.AutUsuario</class>
+		<class>ec.mil.model.dao.entidades.GenTipoSangre</class>
+		<class>ec.mil.model.dao.entidades.GesDependenciaPersona</class>
+		<class>ec.mil.model.dao.entidades.GesDependencia</class>
+		<class>ec.mil.model.dao.entidades.GesEstadoCivil</class>
+		<class>ec.mil.model.dao.entidades.GesEstimulo</class>
+		<class>ec.mil.model.dao.entidades.GesEstimuloPersona</class>
+		<class>ec.mil.model.dao.entidades.GesGrado</class>
+		<class>ec.mil.model.dao.entidades.GesGradosPersona</class>
+		<class>ec.mil.model.dao.entidades.GesPersona</class>
+		<class>ec.mil.model.dao.entidades.GesRegione</class>
+		<class>ec.mil.model.dao.entidades.GesReparto</class>
+		<class>ec.mil.model.dao.entidades.GesTipoEstimulo</class>
+		<class>ec.mil.model.dao.entidades.GesTipoGrado</class>
+		<class>ec.mil.model.dao.entidades.AutMenu</class>
+		<class>ec.mil.model.dao.entidades.AutRolMenu</class>
+		<class>ec.mil.model.dao.entidades.GesTipoSangre</class>
+		<class>ec.mil.model.dao.entidades.LogCategoriaEvento</class>
+		<class>ec.mil.model.dao.entidades.LogGeneral</class>
+	</persistence-unit>
+</persistence>

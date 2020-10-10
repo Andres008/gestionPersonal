@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="GestionPersonal">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="GestionPersonalEJB.jar" deploy-path="/" handle="module:/resource/GestionPersonalEJB/GestionPersonalEJB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="GestionPersonalWeb.war" deploy-path="/" handle="module:/resource/GestionPersonalWeb/GestionPersonalWeb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="Ds_GestionPersonal.jar" deploy-path="/" handle="module:/resource/Ds_GestionPersonal/Ds_GestionPersonal">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

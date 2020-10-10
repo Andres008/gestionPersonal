@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>GESTION PERSONAL</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<style>
+.fondo {
+	min-height: 100%;
+	height: auto !important;
+	background-image: url("imagenes/PORTADA.png");
+	background-size: 101% 101%;
+}
+
+#posicion {
+	margin: 120px auto;
+	width: 99%;
+	font-size: 12px;
+}
+</style>
+	<script type="text/javascript">
+    PrimeFaces.locales['es'] = {
+        closeText: 'Cerrar',
+        prevText: 'Anterior',
+        nextText: 'Siguiente',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        weekHeader: 'Semana',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        timeOnlyTitle: 'Hora',
+        timeText: 'Tiempo',
+        hourText: 'Hora',
+        minuteText: 'Minuto',
+        secondText: 'Segundo',
+        currentText: 'Fecha actual',
+        ampm: false,
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día',
+        allDayText: 'Todo el día'
+    };
+</script>
+</h:head>
+<body>
+	<h:form id="statusBar">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="true"
+			closable="false" resizable="false" showHeader="false">
+			<img src="imagenes/espera.gif" />
+		</p:dialog>
+	</h:form>
+	<div id="div_menu" align="left"
+		style="border: 0px groove navy; width: 99.4%; height: 81.9%; position: absolute; top: 0px; left: 5px;">
+		<div id="logo" align="center">
+			<p:graphicImage url="/imagenes/bannerGestionPersonal.png"
+				alt="EMELNORTE" style="width:100%"></p:graphicImage>
+		</div>
+		<div id="titulo_header" align="center"
+			style="width: 100%; font-size: 16px; line-height: 30px; background-color: navy; color: white">
+			<span>El usuario y contraseña de acceso es de manejo personal
+				e intransferible, cada usuario deberá ser responsable del uso
+				adecuado de este acceso.<h:outputText
+					value="#{beanLogin.credencial.correo}" />
+			</span>
+		</div>
+
+		<div align="center" class="fondo" style="border: 1px groove navy">
+			<div id="posicion">
+				<h:form id="form1">
+					<p:panel id="panel1" header="ACCESO DE USUARIOS"
+						style="width:450px;border: 2px groove navy;background-color: transparent !important;">
+						<p:messages id="messages" />
+						<table align="center"
+							style="background-color: transparent !important;">
+							<tr>
+								<td width="80"><p:graphicImage url="/imagenes/login.png"
+										width="90%" /></td>
+								<td><p:panelGrid columns="2"
+										style="background-color: transparent !important;">
+										<h:outputText value="Código de Usuario:"
+											style="font-weight:bold;" />
+										<h:panelGroup>
+											<p:inputText id="idUsuario" required="true" value="#{formAcceso.idUsuario}"
+												requiredMessage="Ingrese su código de usuario" />
+											<p:message for="idUsuario" />
+										</h:panelGroup>
+										<h:outputText value="Clave:" style="font-weight:bold;" />
+										<h:panelGroup>
+											<p:password id="clave" required="true" value="#{formAcceso.clave}"
+												requiredMessage="Se requiere una contraseña" />
+											<p:message for="clave" />
+										</h:panelGroup>
+									</p:panelGrid></td>
+								<p:commandButton value="Ingresar" update="panel1" action="#{formAcceso.actionObtenerAcceso()}"
+									style="width:150px" icon="ui-icon-newwin" />
+							</tr>
+						</table>
+
+					</p:panel>
+					<br />
+					<br />
+					<br />
+
+				</h:form>
+			</div>
+		</div>
+		<div id="footer" align="center">
+			<div
+				style="background-color: navy; width: 100%; color: white; font-size: 12px;">
+				<span>(c) Centro de Operaciones Aereas y Defensa - COAD.
+					#{beanLogin.anioActual()} - </span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

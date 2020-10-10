@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>GESTION PERSONAL</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<script type="text/javascript">
+    PrimeFaces.locales['es'] = {
+        closeText: 'Cerrar',
+        prevText: 'Anterior',
+        nextText: 'Siguiente',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        weekHeader: 'Semana',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        timeOnlyTitle: 'Hora',
+        timeText: 'Tiempo',
+        hourText: 'Hora',
+        minuteText: 'Minuto',
+        secondText: 'Segundo',
+        currentText: 'Fecha actual',
+        ampm: false,
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día',
+        allDayText: 'Todo el día'
+    };
+</script>
+</h:head>
+<body>
+	<h:form id="statusBar">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+		<p:dialog widgetVar="statusDialog" modal="true" draggable="true"
+			closable="false" resizable="false" showHeader="false">
+			<img src="../../imagenes/login.png" />
+		</p:dialog>
+	</h:form>
+	<div id="div_menu" align="left"
+		style="border: 0px groove navy; width: 99.4%; height: 81.9%; position: absolute; top: 0px; left: 5px;">
+		<div id="logo" align="center">
+			<p:graphicImage url="/imagenes/bannerGestionPersonal.png" alt="COAD"
+				style="width:100%"></p:graphicImage>
+		</div>
+
+		<div align="center" 
+			style="width: 99.9%; min-height: 99.9%; background-image:">
+			<div id="titulo_header"
+				style="width: 99.9%; font-size: 14px; line-height: 30px; background-color: navy; color: white; border: 1px groove navy">
+				<span>Sistema de Gestión de Personal - <h:outputText
+						value="correo" /></span>
+			</div>
+			<h:form style="width:100%;font-size:80%">
+				<p:growl id="messages" showDetail="false" />
+				<p:menubar style="font-size:12px;" model="#{formAcceso.menuModel}">
+					<f:facet name="options">
+						<p:commandButton value="Salir" icon="ui-icon-extlink" />
+					</f:facet>
+				</p:menubar>
+			</h:form>
+			<div id="posicion">
+			
+			</div>
+		</div>
+		<div id="footer" align="center">
+			<div
+				style="background-color: navy; width: 100%; color: white; font-size: 12px;">
+				<span>(c) Centro de Operaciones Aereas y Defensa - COAD.
+					#{beanLogin.anioActual()} - </span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
