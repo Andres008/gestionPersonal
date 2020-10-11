@@ -48,7 +48,6 @@ public class ControllerUsuarios implements Serializable {
 	@EJB
 	private ManagerGestionPersonal managerGestionPersonal;
 	private Boolean busqueda;
-	
 
 	/**
 	 * 
@@ -63,7 +62,7 @@ public class ControllerUsuarios implements Serializable {
 			objAutUsuario.setGesPersona(new GesPersona());
 			objAutUsuario.setAutRole(new AutRole());
 			lstAutUsuario = managerUsuarios.buscarTodosUsuarios();
-			busqueda= false;
+			busqueda = false;
 			System.out.println(beanLogin);
 		} catch (Exception e) {
 			managerLog.generarLogErrorGeneral(beanLogin.getCredencial(), this.getClass(), "inicializarUsuario",
@@ -71,7 +70,23 @@ public class ControllerUsuarios implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void restablercerContrasenia(AutUsuario usuario) {
+		try {
+			usuario.setClave(ModelUtil.md5(usuario.getCedula()));
+			usuario.setPrimerInicio("SI");
+			managerUsuarios.actualizarUsuario(usuario);
+			JSFUtil.crearMensajeINFO("Atención", "Restablecimiento de contraseña correcto");
+			// managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(),
+			// "restablercerContrasenia", "Se actualizó contraseña. "+usuario.getCedula());
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR("Error", e.getMessage());
+			managerLog.generarLogErrorGeneral(beanLogin.getCredencial(), this.getClass(),
+			 "restablercerContrasenia", e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	public List<SelectItem> SIroles() {
 		try {
 			List<AutRole> lstRol = managerUsuarios.findRoleActivo();
@@ -88,23 +103,23 @@ public class ControllerUsuarios implements Serializable {
 			return null;
 		}
 	}
-	
-	public void buscarPersona()
-	{
+
+	public void buscarPersona() {
 		try {
 			objAutUsuario.setGesPersona(managerGestionPersonal.buscarPersonaByCedula(objAutUsuario.getCedula()));
-			busqueda= true;
+			busqueda = true;
 		} catch (Exception e) {
 			inicializarUsuario();
 			JSFUtil.crearMensajeERROR("Atención", e.getMessage());
-			/*managerLog.generarLogErrorGeneral(beanLogin.getCredencial(), this.getClass(), "inicializarUsuario",
-					e.getMessage());*/
+			/*
+			 * managerLog.generarLogErrorGeneral(beanLogin.getCredencial(), this.getClass(),
+			 * "inicializarUsuario", e.getMessage());
+			 */
 			e.printStackTrace();
 		}
 	}
-	
-	public void ingresarUsuario()
-	{
+
+	public void ingresarUsuario() {
 		try {
 			objAutUsuario.setClave(ModelUtil.md5(objAutUsuario.getCedula()));
 			objAutUsuario.setFechaCreacion(new Date());
@@ -118,8 +133,6 @@ public class ControllerUsuarios implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 	/***
 	 * Metodos accesores y modificadores

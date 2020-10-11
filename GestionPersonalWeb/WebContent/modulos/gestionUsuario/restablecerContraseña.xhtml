@@ -77,39 +77,7 @@
 			<div id="posicion" align="center">
 				<h:form>
 					<p:growl id="growl" showDetail="true" sticky="true" />
-					<p:panel header="Ingresar Usuarios" toggleable="true"
-						collapsed="true">
-						<p:panelGrid columns="2" styleClass="ui-noborder">
-							<p:outputLabel value="Ingrese cedula" />
-							<p:panelGrid columns="2">
-								<p:inputMask value="#{controllerUsuarios.objAutUsuario.cedula}" />
-								<p:commandButton value="b"
-									actionListener="#{controllerUsuarios.buscarPersona()}"
-									update="@form" />
-							</p:panelGrid>
-							<p:outputLabel value="Apellido"
-								rendered="#{controllerUsuarios.busqueda}" />
-							<p:outputLabel
-								value="#{controllerUsuarios.objAutUsuario.gesPersona.apellido}"
-								rendered="#{controllerUsuarios.busqueda}" />
-							<p:outputLabel value="Nombre"
-								rendered="#{controllerUsuarios.busqueda}" />
-							<p:outputLabel
-								value="#{controllerUsuarios.objAutUsuario.gesPersona.nombre}"
-								rendered="#{controllerUsuarios.busqueda}" />
-							<p:outputLabel value="Rol"
-								rendered="#{controllerUsuarios.busqueda}" />
-							<p:selectOneMenu
-								value="#{controllerUsuarios.objAutUsuario.autRole.id}"
-								rendered="#{controllerUsuarios.busqueda}">
-								<f:selectItem itemLabel="Rol" noSelectionOption="true" />
-								<f:selectItems value="#{controllerUsuarios.SIroles()}" />
-							</p:selectOneMenu>
-						</p:panelGrid>
-						<p:commandButton value="Ingresar"
-							action="#{controllerUsuarios.ingresarUsuario()}" update="form" />
-					</p:panel>
-					<p:panel header="Usuarios Ingresados">
+					<p:panel header="Usuarios Activos">
 						<p:dataTable value="#{controllerUsuarios.lstAutUsuario}"
 							var="usuario">
 							<p:column headerText="Id Usuario">
@@ -130,6 +98,21 @@
 							<p:column headerText="Estado">
 								<p:outputLabel value="#{usuario.estado}" />
 							</p:column>
+							<p:column headerText="Restablecer Contraseña">
+								<p:commandButton icon="ui-icon-arrowrefresh-1-n" action="#{controllerUsuarios.restablercerContrasenia(usuario)}" update="@form" >
+									<p:confirm header="Confirmación"
+										message="Desea restablecer la contraseña?"
+										icon="pi pi-exclamation-triangle" />
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Si" type="button"
+										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+								</p:confirmDialog>
+							</p:column>
+
 						</p:dataTable>
 					</p:panel>
 				</h:form>

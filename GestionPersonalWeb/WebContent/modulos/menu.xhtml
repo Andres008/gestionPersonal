@@ -77,7 +77,7 @@
 				<p:growl id="messages" showDetail="false" />
 				<p:menubar style="font-size:12px;" model="#{formAcceso.menuModel}">
 					<f:facet name="options">
-						<p:commandButton value="Salir" icon="ui-icon-extlink" />
+						<p:commandButton value="Salir" icon="ui-icon-extlink" action="#{beanLogin.actionSalirSistema()}" />
 					</f:facet>
 				</p:menubar>
 			</h:form>

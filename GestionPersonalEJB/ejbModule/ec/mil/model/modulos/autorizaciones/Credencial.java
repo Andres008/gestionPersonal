@@ -14,6 +14,7 @@ public class Credencial {
 	private String codigoSeguridad;
 	private String direccionIP;
 	private String correo;
+	private String primerInicio;
 	
 	public Credencial(){
 	}
@@ -43,6 +44,14 @@ public class Credencial {
 	}
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	public String getPrimerInicio() {
+		return primerInicio;
+	}
+
+	public void setPrimerInicio(String primerInicio) {
+		this.primerInicio = primerInicio;
 	}
 	
 }

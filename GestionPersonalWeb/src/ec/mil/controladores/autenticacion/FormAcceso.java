@@ -29,8 +29,11 @@ import ec.mil.model.dao.entidades.AutRolMenu;
 import ec.mil.model.dao.entidades.AutRole;
 import ec.mil.model.dao.entidades.AutUsuario;
 import ec.mil.model.modulos.ModelUtil.JSFUtil;
+import ec.mil.model.modulos.ModelUtil.ModelUtil;
+import ec.mil.model.modulos.autUsuarios.ManagerUsuarios;
 import ec.mil.model.modulos.autorizaciones.Credencial;
 import ec.mil.model.modulos.autorizaciones.ManagerAutorizacion;
+import ec.mil.model.modulos.gestioPersonal.ManagerGestionPersonal;
 import ec.mil.model.modulos.log.ManagerLog;
 
 import java.io.Serializable;
@@ -50,50 +53,74 @@ public class FormAcceso implements Serializable {
 	private String idUsuario;
 	private String clave;
 	private MenuModel model;
-	
+	private Boolean panelCambioContr;
+
 	@EJB
 	ManagerAutorizacion managerAutorizacion;
-	
+
 	@EJB
 	ManagerLog managerLog;
 
+	@EJB
+	ManagerUsuarios managerUsuario;
+
 	@ManagedProperty("#{beanLogin}")
 	private BeanLogin beanLogin;
-	
+
 	@PostConstruct
-	public void inicializar()
-	{
-		objAutUsuario = new AutUsuario();
-		beanLogin= new BeanLogin();
+	public void inicializar() {
+		beanLogin = new BeanLogin();
 	}
-	
-	
-    public void menuByRol(AutRole objAutRol) throws Exception {
-    	List<AutRolMenu> lstAutRolMenu = managerAutorizacion.findRolMenuByRol(objAutRol);
-    	 model = new DefaultMenuModel();
-    	for (AutRolMenu autRolMenu : lstAutRolMenu) {
-    		//First submenu
-            DefaultSubMenu submenu = DefaultSubMenu.builder()
-                    .label(autRolMenu.getAutMenu().getNombre())
-                    .build();
-    		for (AutPerfile autPerfile : autRolMenu.getAutMenu().getAutPerfiles()) {
-    			DefaultMenuItem item  = DefaultMenuItem.builder()
-    	                 .value(autPerfile.getNombre())
-    	                 .icon("pi pi-save")
-    	                 .command("#{formAcceso.acceso('"+autPerfile.getUrl()+"')}")
-    	                 .update("messages")
-    	                 .build();
-    			submenu.getElements().add(item);
+
+	public void cambiarContraseñaPrimerAcceso() {
+		try {
+			if (!objAutUsuario.getCedula().equals(objAutUsuario.getClave()))
+			{
+				objAutUsuario.setClave(ModelUtil.md5(objAutUsuario.getClave()));
+				objAutUsuario.setPrimerInicio("NO");
+				managerUsuario.actualizarUsuario(objAutUsuario);
+				managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "cambiarContraseñaPrimerAcceso",
+						"Se cambio la contrasenia por primer uso de usuario: " + objAutUsuario.getCedula());
+				JSFUtil.crearMensajeINFO("Atención", "Contraseña Actualizada.");
+				inicializarCredenciales();
+			}else
+			{
+				JSFUtil.crearMensajeWARN("Advertencia", "La clave no puede ser igual al usuario (Número de cédula).");
 			}
-    		model.getElements().add(submenu);
+			
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR("Error", e.getMessage());
+			managerLog.generarLogErrorGeneral(beanLogin.getCredencial(), this.getClass(),
+					"cambiarContraseñaPrimerAcceso",
+					"Error al cambiar contraseña primer uso: " + objAutUsuario.getCedula());
+			e.printStackTrace();
 		}
-    }
-    
-    public String acceso(String ruta)
-    {
-    	System.out.println(ruta+"?faces-redirect=true");
-    	return ruta+"?faces-redirect=true";
-    }
+	}
+
+	public void inicializarCredenciales() {
+		panelCambioContr = false;
+		objAutUsuario = new AutUsuario();
+	}
+
+	public void menuByRol(AutRole objAutRol) throws Exception {
+		List<AutRolMenu> lstAutRolMenu = managerAutorizacion.findRolMenuByRol(objAutRol);
+		model = new DefaultMenuModel();
+		for (AutRolMenu autRolMenu : lstAutRolMenu) {
+			// First submenu
+			DefaultSubMenu submenu = DefaultSubMenu.builder().label(autRolMenu.getAutMenu().getNombre()).build();
+			for (AutPerfile autPerfile : autRolMenu.getAutMenu().getAutPerfiles()) {
+				DefaultMenuItem item = DefaultMenuItem.builder().value(autPerfile.getNombre()).icon("pi pi-save")
+						.command("#{formAcceso.acceso('" + autPerfile.getUrl() + "')}").update("messages").build();
+				submenu.getElements().add(item);
+			}
+			model.getElements().add(submenu);
+		}
+	}
+
+	public String acceso(String ruta) {
+		System.out.println(ruta + "?faces-redirect=true");
+		return ruta + "?faces-redirect=true";
+	}
 
 	/*
 	 * public String getBrowserName() { ExternalContext externalContext =
@@ -107,9 +134,10 @@ public class FormAcceso implements Serializable {
 	 * if(userAgent.contains("Safari")){ return "Safari"; } return "Unknown"; }
 	 */
 	public String actionObtenerAcceso() {
-		
+
 		try {
-			Credencial credencial = managerAutorizacion.obtenerAcceso(idUsuario, clave);
+			Credencial credencial = managerAutorizacion.obtenerAcceso(idUsuario, ModelUtil.md5(clave));
+			objAutUsuario = managerAutorizacion.findByIdAutUsuario(idUsuario);
 			// se configura la direccion IP del cliente:
 			menuByRol(managerAutorizacion.findByIdAutUsuario(idUsuario).getAutRole());
 			HttpServletRequest request;
@@ -128,33 +156,20 @@ public class FormAcceso implements Serializable {
 			// IP:
 			credencial.setDireccionIP(request.getRemoteAddr());
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("credencial", credencial);
+			if (credencial.getPrimerInicio().equals("SI")) {
+				objAutUsuario.setClave("");
+				panelCambioContr = true;
+				return "";
+			}
+			managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "actionObtenerAcceso",
+					"Se ingresa al sistema");
+			return "/modulos/menu?faces-redirect=true";
 
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage(), null);
 			e.printStackTrace();
 			return "";
 		}
-		managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "actionObtenerAcceso", "Se ingresa al sistema");
-		return "/modulos/menu?faces-redirect=true";
-	}
-
-	/**
-	 * 
-	 * @param clave
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 */
-	public String MD5(String clave) throws NoSuchAlgorithmException {
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(clave.getBytes("UTF-8"), 0, clave.length());
-			byte[] bt = md.digest();
-			BigInteger bi = new BigInteger(1, bt);
-			String md5 = bi.toString(16);
-			return md5.toUpperCase();
-		} catch (UnsupportedEncodingException ex) {
-		}
-		return null;
 
 	}
 
@@ -197,5 +212,13 @@ public class FormAcceso implements Serializable {
 	public void setMenuModel(MenuModel menuModel) {
 		this.model = menuModel;
 	}
-	
+
+	public Boolean getPanelCambioContr() {
+		return panelCambioContr;
+	}
+
+	public void setPanelCambioContr(Boolean panelCambioContr) {
+		this.panelCambioContr = panelCambioContr;
+	}
+
 }

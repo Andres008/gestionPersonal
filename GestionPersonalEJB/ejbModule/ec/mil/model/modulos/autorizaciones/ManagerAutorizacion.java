@@ -61,6 +61,7 @@ public class ManagerAutorizacion {
 		credencial = new Credencial();
 		credencial.setIdUsuario(pIdUsuario);
 		credencial.setCorreo(usuario.getGesPersona().getCorreo());
+		credencial.setPrimerInicio(usuario.getPrimerInicio());
 		return credencial;
 	}
 	

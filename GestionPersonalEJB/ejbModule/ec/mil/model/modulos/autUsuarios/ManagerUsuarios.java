@@ -48,6 +48,13 @@ public class ManagerUsuarios {
 			throw new Exception("Error al insertar usuario");
 		}		
 	}
+	public void actualizarUsuario(AutUsuario usuario) throws Exception {
+		try {
+			managerDAOGestionPersonal.actualizar(usuario);
+		} catch (Exception e) {
+			throw new Exception("Error an actualizar "+usuario.getCedula());
+		}		
+	}
     
     
 
