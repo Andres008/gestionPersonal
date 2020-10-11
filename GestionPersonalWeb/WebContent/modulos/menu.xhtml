@@ -11,7 +11,7 @@
 .fondo {
 	min-height: 100%;
 	height: auto !important;
-	background-image: url("imagenes/PORTADA.png");
+	background-image: url("../imagenes/PORTADA.png");
 	background-size: 101% 101%;
 }
 
@@ -56,25 +56,26 @@
 			onsuccess="PF('statusDialog').hide()" />
 		<p:dialog widgetVar="statusDialog" modal="true" draggable="true"
 			closable="false" resizable="false" showHeader="false">
-			<img src="imagenes/espera.gif" />
+			<img src="../../imagenes/login.png" />
 		</p:dialog>
 	</h:form>
 	<div id="div_menu" align="left"
 		style="border: 0px groove navy; width: 99.4%; height: 81.9%; position: absolute; top: 0px; left: 5px;">
 		<div id="logo" align="center">
 			<p:graphicImage url="/imagenes/bannerGestionPersonal.png"
-				alt="EMELNORTE" style="width:100%"></p:graphicImage>
+				alt="COAD" style="width:100%"></p:graphicImage>
 		</div>
 
 		<div align="center" class="fondo"
-			style="width: 99.9%; min-height: 99.9%;">
+			style="width: 99.9%; min-height: 99.9%; background-image: ">
 			<div id="titulo_header"
 				style="width: 99.9%; font-size: 14px; line-height: 30px; background-color: navy; color: white; border: 1px groove navy">
 				<span>Sistema de Gestión de Personal - <h:outputText
 						value="correo" /></span>
 			</div>
 			<h:form style="width:100%;font-size:80%">
-				<p:menubar style="font-size:12px;">
+				<p:growl id="messages" showDetail="false" />
+				<p:menubar style="font-size:12px;" model="#{formAcceso.menuModel}">
 					<f:facet name="options">
 						<p:commandButton value="Salir" icon="ui-icon-extlink" />
 					</f:facet>

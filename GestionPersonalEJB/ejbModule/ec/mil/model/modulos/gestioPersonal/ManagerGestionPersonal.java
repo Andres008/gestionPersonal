@@ -21,26 +21,25 @@ import ec.mil.model.dao.manager.ManagerDAOGestionPersonal;
 public class ManagerGestionPersonal {
 
 	@EJB
-	private ManagerDAOGestionPersonal managerDAOGestionPersonal; 
-    
+	private ManagerDAOGestionPersonal managerDAOGestionPersonal;
+
 	/**
-     * Default constructor. 
-     */
-    public ManagerGestionPersonal() {
-        // TODO Auto-generated constructor stub
-    }
-    
-    @SuppressWarnings("unchecked")
-	public List<GesTipoEstimulo> buscarTipoEstimulo() throws Exception
-    {
-    	List<GesTipoEstimulo> lstTipoEstimulo;
+	 * Default constructor.
+	 */
+	public ManagerGestionPersonal() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<GesTipoEstimulo> buscarTipoEstimulo() throws Exception {
+		List<GesTipoEstimulo> lstTipoEstimulo;
 		try {
 			lstTipoEstimulo = managerDAOGestionPersonal.findAll(GesTipoEstimulo.class, null);
 		} catch (Exception e) {
 			throw new Exception("Error al buscar lista Tipo estimulo.");
 		}
-    	return lstTipoEstimulo;
-    }
+		return lstTipoEstimulo;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<GesPersona> buscarPersonas() throws Exception {
@@ -54,7 +53,7 @@ public class ManagerGestionPersonal {
 	@SuppressWarnings("unchecked")
 	public List<GesEstadoCivil> buscarEstadoCivilActivo() throws Exception {
 		try {
-			return managerDAOGestionPersonal.findWhere(GesEstadoCivil.class, "o.estado='A'", "o.nombre ASC") ;
+			return managerDAOGestionPersonal.findWhere(GesEstadoCivil.class, "o.estado='A'", "o.nombre ASC");
 		} catch (Exception e) {
 			throw new Exception("Error al buscar estado Civil");
 		}
@@ -63,7 +62,8 @@ public class ManagerGestionPersonal {
 	@SuppressWarnings("unchecked")
 	public List<GesGrado> buscarGradoActivo() throws Exception {
 		try {
-			return managerDAOGestionPersonal.findWhere(GesGrado.class, "o.estado='A'", "o.gesTipoGrado.id ASC, o.orden ASC");
+			return managerDAOGestionPersonal.findWhere(GesGrado.class, "o.estado='A'",
+					"o.gesTipoGrado.id ASC, o.orden ASC");
 		} catch (Exception e) {
 			throw new Exception("Error al buscar Grados.");
 		}
@@ -82,9 +82,20 @@ public class ManagerGestionPersonal {
 		try {
 			managerDAOGestionPersonal.insertar(objGesPersona);
 		} catch (Exception e) {
-			throw new Exception("Error al ingresar persona. "+objGesPersona.getCedula());
+			throw new Exception("Error al ingresar persona. " + objGesPersona.getCedula());
 		}
-		
+
+	}
+
+	public GesPersona buscarPersonaByCedula(String cedula) throws Exception {
+		try {
+			GesPersona v_persona = (GesPersona) managerDAOGestionPersonal.findById(GesPersona.class, cedula);
+			if (v_persona == null)
+				throw new Exception("Atención, persona no existe.");
+			return v_persona;
+		} catch (Exception e) {
+			throw new Exception("Persona no registrada.");
+		}
 	}
 
 }

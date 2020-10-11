@@ -2,18 +2,22 @@ package ec.mil.controladores.session;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import ec.mil.model.modulos.ModelUtil.ModelUtil;
 import ec.mil.model.modulos.autorizaciones.Credencial;
+import ec.mil.model.modulos.log.ManagerLog;
 
 @Named("beanLogin")
-@SessionScoped
+@ApplicationScoped
 public class BeanLogin implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
+	@EJB
+	ManagerLog managerLog ;
 
 		
 	 /* Token de seguridad.
@@ -31,8 +35,13 @@ public class BeanLogin implements Serializable {
 	 * @return redireccion a index.xhtml
 	 */
 	public String actionSalirSistema(){
+		if(credencial!=null)
+			managerLog.generarLogAuditoria(credencial, this.getClass(), "actionSalirSistema", "Cierre de sesion");
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "/index.xhtml?faces-redirect=true"; 
 	}
+	
+	
 	
 	public int anioActual()
 	{
@@ -63,15 +72,15 @@ public class BeanLogin implements Serializable {
 	}
 	
 	public String actionMostrarMenuPrincipal(){
-		if(credencial==null)
-			return actionSalirSistema();
-		return "/modulos/menu.xhtml?faces-redirect=true";
+	/*	if(credencial==null)
+			return actionSalirSistema();*/
+		return "/modulos/menu?faces-redirect=true";
 	}
 	
 	public String actionMostrarMenuInicial(){
 		if(credencial==null)
 			return actionSalirSistema();
-		return "/modulos/menuPrincipal.xhtml?faces-redirect=true";
+		return "/modulos/gestion/plantilla?faces-redirect=true";
 	}
 	
 	public String actionRuta(/*AutPerfil autPerfil*/){

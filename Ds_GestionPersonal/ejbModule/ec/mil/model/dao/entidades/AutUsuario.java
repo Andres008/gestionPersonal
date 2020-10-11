@@ -16,8 +16,6 @@ public class AutUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="AUT_USUARIO_CEDULA_GENERATOR", sequenceName="SEQ_AUT_USUARIO")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="AUT_USUARIO_CEDULA_GENERATOR")
 	private String cedula;
 
 	private String clave;

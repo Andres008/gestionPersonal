@@ -135,7 +135,7 @@ public class FormAcceso implements Serializable {
 			return "";
 		}
 		managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "actionObtenerAcceso", "Se ingresa al sistema");
-		return "/modulos/gestion/plantilla?faces-redirect=true";
+		return "/modulos/menu?faces-redirect=true";
 	}
 
 	/**

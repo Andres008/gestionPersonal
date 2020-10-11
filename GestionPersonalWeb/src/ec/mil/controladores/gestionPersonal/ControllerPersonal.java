@@ -19,6 +19,7 @@ import ec.mil.model.dao.entidades.GesGrado;
 import ec.mil.model.dao.entidades.GesPersona;
 import ec.mil.model.dao.entidades.GesTipoSangre;
 import ec.mil.model.modulos.ModelUtil.JSFUtil;
+import ec.mil.model.modulos.ModelUtil.ModelUtil;
 import ec.mil.model.modulos.gestioPersonal.ManagerGestionPersonal;
 import ec.mil.model.modulos.log.ManagerLog;
 
@@ -37,7 +38,7 @@ public class ControllerPersonal implements Serializable {
 	private ManagerGestionPersonal managerGestionPersonal;
 	@EJB
 	private ManagerLog managerLog;
-	@ManagedProperty("#{beanLogin}")
+	@ManagedProperty(value = "#{beanLogin}")
 	private BeanLogin beanLogin;
 	private static final long serialVersionUID = 1L;
 	private GesPersona objGesPersona;
@@ -51,6 +52,7 @@ public class ControllerPersonal implements Serializable {
 	}
 
 	public void inicializarPersona() {
+		System.out.println(beanLogin);
 		objGesPersona = new GesPersona();
 		objGesPersona.setGesEstadoCivil(new GesEstadoCivil());
 		objGesPersona.setGesGrado(new GesGrado());
@@ -123,9 +125,12 @@ public class ControllerPersonal implements Serializable {
 
 	public void ingresarPersona() {
 		try {
+			objGesPersona.setApellido(ModelUtil.cambiarMayusculas( objGesPersona.getApellido()));
+			objGesPersona.setNombre(ModelUtil.cambiarMayusculas(objGesPersona.getNombre()));
+			objGesPersona.setCorreo(ModelUtil.cambiarMinusculas(objGesPersona.getCorreo()));
 			managerGestionPersonal.ingresarPersona(objGesPersona);
-			managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "ingresarPersona",
-					"Se ingreso persona id " + objGesPersona.getCedula());
+			/*managerLog.generarLogUsabilidad(beanLogin.getCredencial(), this.getClass(), "ingresarPersona",
+					"Se ingreso persona id " + objGesPersona.getCedula());*/
 			JSFUtil.crearMensajeINFO("Mensaje", "Ingreso Correcto.");
 			inicializarPersona();
 		} catch (Exception e) {
@@ -136,6 +141,7 @@ public class ControllerPersonal implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/*
 	 * 

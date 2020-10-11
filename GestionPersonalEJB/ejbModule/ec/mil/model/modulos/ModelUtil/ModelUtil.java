@@ -4,7 +4,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -192,6 +196,14 @@ public class ModelUtil {
 		}
 		return diaAlfanumerico;
 	}
+	
+	public static String cambiarMayusculas(String frase) {
+		return frase.toUpperCase();
+	}
+	
+	public static String cambiarMinusculas(String frase) {
+		return frase.toLowerCase();
+	}
 
 	/**
 	 * Devuelve el mes alfanumerico.
@@ -280,6 +292,27 @@ public class ModelUtil {
 		} else
 			throw new Exception("Error guardando archivo: no existe el flujo indicado (inputStream)");
 		return nombreArchivoCompleto;
+	}
+	
+	/**
+	 * 
+	 * @param clave
+	 * @return
+	 * @throws Exception 
+	 * @throws NoSuchAlgorithmException
+	 */
+	public static String md5(String clave) throws Exception {
+		
+			try {
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				md.update(clave.getBytes("UTF-8"), 0, clave.length());
+				byte[] bt = md.digest();
+				BigInteger bi = new BigInteger(1, bt);
+				String md5 = bi.toString(16);
+				return md5.toUpperCase();
+			} catch (Exception e) {
+				throw new Exception("Error al codificar Clave.");
+			}
 	}
 
 }
